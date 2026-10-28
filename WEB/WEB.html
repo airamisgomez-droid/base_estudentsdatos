@@ -1,0 +1,492 @@
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base de Datos Escolar</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #eff8ff, #f8f4ff);
+    color: #26334d;
+}
+
+header {
+    background: linear-gradient(135deg, #4263c7, #79d7f5);
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+h1, h2, h3 {
+    font-weight: bold;
+    color: #80d5ff;
+}
+
+header h1 {
+    color: #b8efff;
+}
+
+nav {
+    background: #26356f;
+    padding: 14px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 12px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #a8eaff;
+}
+
+main {
+    max-width: 1000px;
+    margin: 22px auto;
+    padding: 0 15px;
+}
+
+.banner {
+    width: 100%;
+    max-height: 240px;
+    object-fit: cover;
+    display: block;
+}
+
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.galeria img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 5px 15px #8bbde755;
+    transition: transform 0.35s, box-shadow 0.35s;
+}
+
+.galeria img:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 20px #70bde888;
+}
+
+.tarjetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.tarjeta, .panel {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 18px #526da51a;
+    border: 1px solid #d8efff;
+}
+
+.tarjeta {
+    flex: 1;
+    min-width: 180px;
+}
+
+.numero {
+    color: #4263c7;
+    font-weight: bold;
+}
+
+.panel {
+    margin-top: 20px;
+}
+
+input, select {
+    width: 100%;
+    padding: 11px;
+    margin: 7px 0 14px;
+    border: 1px solid #c7e5fa;
+    border-radius: 8px;
+    background: #fbfdff;
+}
+
+input:focus, select:focus {
+    outline: 2px solid #a8eaff;
+}
+
+/* BOTÓN GUARDAR AZUL CLARO ANIMADO */
+.guardar {
+    background: linear-gradient(135deg, #a8eaff, #69cafa);
+    color: #174d78;
+    border: 1px solid #83d7ff;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #55b5e0,
+                0 7px 14px #77c9ed55;
+    transition: all 0.25s ease;
+    animation: flotar 2s ease-in-out infinite;
+}
+
+.guardar:hover {
+    background: linear-gradient(135deg, #c6f2ff, #7bd5ff);
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 7px 0 #55b5e0,
+                0 12px 20px #77c9ed88;
+}
+
+.guardar:active {
+    transform: translateY(3px) scale(0.97);
+    box-shadow: 0 1px 0 #55b5e0;
+}
+
+@keyframes flotar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+button {
+    border: none;
+    border-radius: 8px;
+    padding: 9px 13px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.04);
+}
+
+.eliminar {
+    background: #ff7d91;
+    color: white;
+}
+
+.tabla-contenedor {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+th {
+    background: #4263c7;
+    color: white;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 11px;
+    border-bottom: 1px solid #e3e8f2;
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background: #f1f8ff;
+}
+
+footer {
+    margin-top: 25px;
+    padding: 20px;
+    text-align: center;
+    background: #26356f;
+    color: white;
+}
+
+footer p {
+    color: white;
+}
+
+@media (max-width: 650px) {
+    .galeria {
+        grid-template-columns: 1fr;
+    }
+
+    .galeria img {
+        height: auto;
+    }
+
+    nav a {
+        display: inline-block;
+        margin: 5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>BASE DE DATOS ESCOLAR</h1>
+    <p>Sistema de registro y administración de estudiantes</p>
+</header>
+
+<img class="banner"
+src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1400&q=80"
+alt="Estudiantes en un entorno educativo">
+
+<nav>
+    <a href="#inicio">Inicio</a>
+    <a href="#registro">Registrar</a>
+    <a href="#datos">Estudiantes</a>
+    <a href="#galeria">Galería</a>
+</nav>
+
+<main>
+
+<section class="panel">
+    <h2>¡Bienvenidos!</h2>
+    <p>Organiza la información escolar en un espacio bonito,
+    moderno y fácil de utilizar.</p>
+</section>
+
+<section id="galeria">
+    <h2>Galería escolar</h2>
+    <div class="galeria">
+        <img src="images (2).jfif"
+        alt="Estudiantes aprendiendo con libros">
+
+        <img src="images (1).jfif"
+        alt="Estudiantes conversando en el salón">
+
+        <img src="images (3).jfif"
+        alt="Profesora enseñando a sus estudiantes">
+    </div>
+</section>
+
+<section id="inicio" class="tarjetas">
+    <div class="tarjeta">
+        <h3>Total de estudiantes</h3>
+        <p class="numero" id="total">0</p>
+    </div>
+
+    <div class="tarjeta">
+        <h3>Estado del sistema</h3>
+        <p>Base de datos local activa</p>
+    </div>
+
+    <div class="tarjeta">
+        <h3>Tipo de información</h3>
+        <p>Registro académico</p>
+    </div>
+</section>
+
+<section id="registro" class="panel">
+    <h2>Registrar estudiante</h2>
+    <p>Completa los campos para agregar un registro.</p>
+
+    <form id="formulario">
+        <label for="nombre">Nombre completo:</label>
+        <input id="nombre" required
+        placeholder="Nombre del estudiante">
+
+        <label for="documento">Código estudiantil:</label>
+        <input id="documento" required
+        placeholder="Ej. EST001">
+
+        <label for="curso">Curso:</label>
+        <select id="curso" required>
+            <option value="">Selecciona un curso</option>
+            <option>6°</option>
+            <option>7°</option>
+            <option>8°</option>
+            <option>9°</option>
+            <option>10°</option>
+            <option>11°</option>
+        </select>
+
+        <label for="correo">Correo electrónico:</label>
+        <input id="correo" type="email" required
+        placeholder="estudiante@ejemplo.com">
+
+        <button class="guardar" type="submit">
+            ✨ Guardar registro
+        </button>
+    </form>
+</section>
+
+<section id="datos" class="panel">
+    <h2>Tabla de estudiantes</h2>
+
+    <input id="buscar"
+    placeholder="Buscar por nombre, código o curso...">
+
+    <div class="tabla-contenedor">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Código</th>
+                    <th>Curso</th>
+                    <th>Correo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla"></tbody>
+        </table>
+    </div>
+
+    <p id="vacio">No hay estudiantes registrados.</p>
+</section>
+
+<section class="panel">
+    <h2>Acerca de la base de datos</h2>
+    <p>Esta aplicación permite registrar, consultar, buscar
+    y eliminar información de estudiantes. Los datos se guardan
+    en el navegador mediante localStorage.</p>
+</section>
+
+</main>
+
+<footer>
+    <p>Proyecto de Base de Datos | Sistema Escolar</p>
+    <p>Diseñado con HTML, CSS y JavaScript</p>
+</footer>
+
+<script>
+const formulario = document.getElementById("formulario");
+const tabla = document.getElementById("tabla");
+const buscar = document.getElementById("buscar");
+const total = document.getElementById("total");
+const vacio = document.getElementById("vacio");
+
+let estudiantes = [];
+
+try {
+    estudiantes = JSON.parse(
+        localStorage.getItem("estudiantesEscolares") || "[]"
+    );
+
+    if (!Array.isArray(estudiantes)) estudiantes = [];
+} catch {
+    estudiantes = [];
+}
+
+function guardarDatos() {
+    localStorage.setItem(
+        "estudiantesEscolares",
+        JSON.stringify(estudiantes)
+    );
+}
+
+function crearCelda(valor) {
+    const celda = document.createElement("td");
+    celda.textContent = valor;
+    return celda;
+}
+
+function mostrarEstudiantes() {
+    tabla.replaceChildren();
+
+    const consulta = buscar.value.toLowerCase().trim();
+
+    const filtrados = estudiantes.filter(e =>
+        [e.nombre, e.documento, e.curso, e.correo]
+        .some(valor => valor.toLowerCase().includes(consulta))
+    );
+
+    filtrados.forEach(e => {
+        const fila = document.createElement("tr");
+
+        fila.appendChild(crearCelda(e.nombre));
+        fila.appendChild(crearCelda(e.documento));
+        fila.appendChild(crearCelda(e.curso));
+        fila.appendChild(crearCelda(e.correo));
+
+        const celdaAcciones = document.createElement("td");
+        const boton = document.createElement("button");
+
+        boton.textContent = "Eliminar";
+        boton.className = "eliminar";
+
+        boton.addEventListener("click", () => {
+            if (confirm("¿Deseas eliminar este registro?")) {
+                estudiantes = estudiantes.filter(
+                    estudiante => estudiante.id !== e.id
+                );
+
+                guardarDatos();
+                mostrarEstudiantes();
+            }
+        });
+
+        celdaAcciones.appendChild(boton);
+        fila.appendChild(celdaAcciones);
+        tabla.appendChild(fila);
+    });
+
+    total.textContent = estudiantes.length;
+    vacio.hidden = filtrados.length > 0;
+}
+
+formulario.addEventListener("submit", evento => {
+    evento.preventDefault();
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const documento = document.getElementById("documento").value.trim();
+    const curso = document.getElementById("curso").value;
+    const correo = document.getElementById("correo").value.trim();
+
+    if (!nombre || !documento || !curso || !correo) return;
+
+    if (estudiantes.some(e =>
+        e.documento.toLowerCase() === documento.toLowerCase()
+    )) {
+        alert("Ese código estudiantil ya está registrado.");
+        return;
+    }
+
+    estudiantes.push({
+        id: crypto.randomUUID
+            ? crypto.randomUUID()
+            : String(Date.now()),
+        nombre,
+        documento,
+        curso,
+        correo
+    });
+
+    guardarDatos();
+    formulario.reset();
+    mostrarEstudiantes();
+
+    alert("¡Estudiante registrado correctamente!");
+});
+
+buscar.addEventListener("input", mostrarEstudiantes);
+
+mostrarEstudiantes();
+</script>
+
+</body>
+</html>
